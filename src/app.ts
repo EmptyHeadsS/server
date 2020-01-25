@@ -14,14 +14,8 @@ import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 const MongoStore = mongo(session);
 
 // Controllers (route handlers)
-import * as homeController from "./controllers/home";
 import * as userController from "./controllers/user";
-import * as apiController from "./controllers/api";
-import * as contactController from "./controllers/contact";
-
-
-// API keys and Passport configuration
-import * as passportConfig from "./config/passport";
+import * as artistController from "./controllers/artists";
 
 // Create Express server
 const app = express();
@@ -30,6 +24,7 @@ const app = express();
 const mongoUrl = MONGODB_URI;
 mongoose.Promise = bluebird;
 
+console.log(mongoUrl);
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true } ).then(
     () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
 ).catch(err => {
@@ -86,20 +81,8 @@ app.use(
  */
 app.get("/login", userController.login);
 app.post("/createUser", userController.createUser);
-app.post("/login", userController.updateLocation);
+app.post("/updateLocation", userController.updateLocation);
 
-/**
- * API examples routes.
- */
-app.get("/api", apiController.getApi);
-app.get("/api/facebook", passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook);
-
-/**
- * OAuth authentication routes. (Sign in)
- */
-app.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email", "public_profile"] }));
-app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/login" }), (req, res) => {
-    res.redirect(req.session.returnTo || "/");
-});
+app.post("/createArtists", artistController.addArtists);
 
 export default app;
