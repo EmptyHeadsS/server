@@ -28,6 +28,7 @@ export const login = async (req: Request, res: Response) => {
  * Create User Page.
  */
 export const createUser = async (req: Request, res: Response) => {
+    console.log(req.body);
     const {username, password, location, genres} = req.body;
     try {
         const newUser = await User.create({
@@ -39,6 +40,7 @@ export const createUser = async (req: Request, res: Response) => {
         res.status(202).json(newUser);
     } catch (e) {
         res.status(500).send("Incorrect user format.");
+        console.log(e);
     }
 };
 
@@ -49,7 +51,7 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateLocation = async (req: Request, res: Response) => {
     const {username, location} = req.body;
     try {
-        const updatedUser = await User.updateOne({username}, {location});
+        const updatedUser = await User.updateOne({username}, {location}).exec();
         res.status(202).json(updatedUser);
     } catch (e) {
         res.status(500).send("Incorrect user format.");
