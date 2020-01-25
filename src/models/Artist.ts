@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 
-export type ArtistDocument = mongoose.Document & {
+export interface ArtistInterface {
     city: string;
     country: string;
     name: string;
     genre: string;
-};
+}
+export type ArtistDocument = mongoose.Document & ArtistInterface
 
 const artistSchema = new mongoose.Schema({
     city: String,
