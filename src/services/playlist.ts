@@ -1,8 +1,5 @@
 import { Artist, ArtistInterface } from "../models/Artist";
-
-const getSongsByArtist = (artistName: string, num: number) => {
-    return [];
-};
+import * as spotify from "./spotify";
 
 const randInt = (lower: number, upper: number) => {
     return Math.floor(Math.random() * upper) + lower;
@@ -24,7 +21,7 @@ export const generatePlaylists = async (
     }
     const songPromises = [];
     for (const [artistName, num] of Object.entries(playlistPlan)) {
-        songPromises.concat(getSongsByArtist(artistName, num as number));
+        songPromises.concat(spotify.getSongsByArtist(artistName, num as number));
     }
     return Promise.all(songPromises);
 };
