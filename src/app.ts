@@ -16,6 +16,7 @@ const MongoStore = mongo(session);
 // Controllers (route handlers)
 import * as userController from "./controllers/user";
 import * as artistController from "./controllers/artists";
+import * as playlistController from "./controllers/playlist";
 
 // Create Express server
 const app = express();
@@ -84,5 +85,7 @@ app.post("/createUser", userController.createUser);
 app.post("/updateLocation", userController.updateLocation);
 
 app.post("/createArtists", artistController.addArtists);
+
+app.get("/playlist", playlistController.getPlaylist);
 
 export default app;

@@ -6,7 +6,7 @@ const randInt = (lower: number, upper: number) => {
     return Math.floor(Math.random() * upper) + lower;
 };
 // Gets information from
-export const generatePlaylists = async (
+export const generatePlaylist = async (
     localArtists: ArtistInterface[],
     playlistSize?: number
 ) => {
