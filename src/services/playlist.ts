@@ -14,7 +14,7 @@ export const generatePlaylist = async (
     const playlistPlan = new Map();
     for (let index = 0; index < playlistSize; index++) {
         const artistName = localArtists[randInt(0, playlistSize - 1)].name;
-        if (playlistPlan.has(artistName)) {
+        if (!playlistPlan.has(artistName)) {
             playlistPlan.set(artistName, 1);
         } else {
             playlistPlan.set(artistName, playlistPlan.get(artistName) + 1);

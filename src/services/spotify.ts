@@ -70,7 +70,3 @@ export const getSongsByArtist = async (artistName: string, num: number) => {
         id: song.uri.split(":")[2]
     })).slice(0, num);
 };
-
-(async () => {
-    await getSongsByArtist("Loud", 3);
-})();

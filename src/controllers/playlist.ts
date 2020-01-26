@@ -10,14 +10,15 @@ import { generatePlaylist } from "../services/playlist";
  */
 export const getPlaylist = async (req: Request, res: Response) => {
     const username = req.query.username;
-    const playlistSize = req.query.size;
+    const playlistSize = Number(req.query.size);
 
     try {
         const user = await User.findOne({username});
         const city = user.location.city;
         const country = user.location.country;
 
-        const localArtists = await Artist.find({city, country});
+        // const localArtists = await Artist.find({city, country});
+        const localArtists = await Artist.find({});
         const playlist = await generatePlaylist(localArtists, playlistSize);
         res.status(200).json(playlist);
     } catch (e) {
