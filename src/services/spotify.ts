@@ -27,7 +27,7 @@ async function* bearerToken() {
                     qs.stringify(body),
                     config
                 );
-                console.log(res);
+                //console.log(res);
                 token = res.data.access_token;
             } catch (e) {
                 console.log(e);

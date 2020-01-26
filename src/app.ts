@@ -16,9 +16,18 @@ const MongoStore = mongo(session);
 // Controllers (route handlers)
 import * as userController from "./controllers/user";
 import * as artistController from "./controllers/artists";
+import {SocketServer} from "./socket";
+import server from "./server";
 
 // Create Express server
+console.log("strating...");
 const app = express();
+
+// WebSocket
+console.log("Creating websocket");
+const socketServer: SocketServer = new SocketServer();
+console.log("Configuring websocket");
+socketServer.configure(server);
 
 // Connect to MongoDB
 const mongoUrl = MONGODB_URI;
