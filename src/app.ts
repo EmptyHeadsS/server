@@ -9,7 +9,12 @@ import path from "path";
 import mongoose from "mongoose";
 import passport from "passport";
 import bluebird from "bluebird";
+
+import { artists as artistsSeed } from "./artifacts/artists";
+const DO_SEED = false;
+
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
+
 
 const MongoStore = mongo(session);
 
@@ -17,6 +22,7 @@ const MongoStore = mongo(session);
 import * as userController from "./controllers/user";
 import * as artistController from "./controllers/artists";
 import * as playlistController from "./controllers/playlist";
+import { Artist } from "./models/Artist";
 
 // Create Express server
 const app = express();
@@ -28,7 +34,15 @@ mongoose.Promise = bluebird;
 console.log(mongoUrl);
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true } ).then(
     () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
-).catch(err => {
+)
+.then(() => {
+    if (DO_SEED) {
+        return Promise.all(artistsSeed.ArtistInterface.map((artist) => Artist.create(artist)));
+    } else {
+        return Promise.resolve([]);
+    }
+})
+.catch(err => {
     console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
     // process.exit();
 });
