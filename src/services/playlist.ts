@@ -1,5 +1,6 @@
 import { ArtistInterface } from "../models/Artist";
 import * as spotify from "./spotify";
+import * as _ from "lodash";
 
 const randInt = (lower: number, upper: number) => {
     return Math.floor(Math.random() * upper) + lower;
@@ -19,10 +20,12 @@ export const generatePlaylists = async (
             playlistPlan.set(artistName, playlistPlan.get(artistName) + 1);
         }
     }
+
     const songPromises: Array<Promise<Array<spotify.Song>>> = [];
     // Will not work, need to concat in a different way
     for (const [artistName, num] of playlistPlan) {
-        songPromises.concat(spotify.getSongsByArtist(artistName, num as number));
+        songPromises.push(spotify.getSongsByArtist(artistName, num as number));
     }
-    return Promise.all(songPromises);
+    const bumpyPlaylist = await Promise.all(songPromises);
+    return _.flatMap(bumpyPlaylist);
 };
