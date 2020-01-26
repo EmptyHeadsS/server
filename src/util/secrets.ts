@@ -18,6 +18,7 @@ export const MONGODB_URI = "mongodb+srv://emptyHeads:not1enough7food@cluster0-jq
 
 // Spotify section
 export const SPOTIFY_CLIENT_ID = "";
+export const SPOTIFY_CLIENT_SECRET = "";
 
 
 if (!SESSION_SECRET) {

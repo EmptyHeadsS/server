@@ -2,6 +2,11 @@ import axios from "axios";
 import * as qs from "querystring";
 // import * as countries from "alpha2-countries";
 
+export interface Song {
+    name: string;
+    id: string;
+}
+
 async function* bearerToken() {
     let token = undefined;
     const config = {
@@ -16,13 +21,17 @@ async function* bearerToken() {
 
     while (true) {
         if (token === undefined) {
-            const res = await axios.post(
-                "https://accounts.spotify.com/api/token",
-                qs.stringify(body),
-                config
-            );
-            console.log(res);
-            token = res.request.body.access_token;
+            try {
+                const res = await axios.post(
+                    "https://accounts.spotify.com/api/token",
+                    qs.stringify(body),
+                    config
+                );
+                console.log(res);
+                token = res.data.access_token;
+            } catch (e) {
+                console.log(e);
+            }
         }
         yield token;
     }
@@ -30,7 +39,7 @@ async function* bearerToken() {
 
 export const getSongsByArtist = async (artistName: string, num: number) => {
     // Request config setup
-    const token = await bearerToken().next();
+    const token = (await bearerToken().next()).value;
     const config = {
         headers: {
             "Accept": "application/json",
@@ -46,7 +55,7 @@ export const getSongsByArtist = async (artistName: string, num: number) => {
         searchURLQuerry,
         config
     );
-    const artist = searchResults.request.body.artists.items[0];
+    const artist = searchResults.data.artists.items[0];
     const artistId = artist.uri.split(":")[2];
 
     // Querry to get top 5 songs from artists
@@ -55,9 +64,13 @@ export const getSongsByArtist = async (artistName: string, num: number) => {
         topUrl,
         config
     );
-    const topSongs = topResults.request.body.tracks;
-    return topSongs.map((song) => ({
+    const topSongs = topResults.data.tracks;
+    return topSongs.map((song: any) => ({
         name: song.name,
         id: song.uri.split(":")[2]
     })).slice(0, num);
 };
+
+(async () => {
+    await getSongsByArtist("Loud", 3);
+})();
