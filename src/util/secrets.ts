@@ -16,6 +16,10 @@ export const SESSION_SECRET = process.env["SESSION_SECRET"];
 // export const MONGODB_URI = prod ? process.env["MONGODB_URI"] : process.env["MONGODB_URI_LOCAL"];
 export const MONGODB_URI = "mongodb+srv://emptyHeads:not1enough7food@cluster0-jqwr4.mongodb.net/test?retryWrites=true&w=majority";
 
+// Spotify section
+export const SPOTIFY_CLIENT_ID = "";
+export const SPOTIFY_CLIENT_SECRET = "";
+
 
 if (!SESSION_SECRET) {
     logger.error("No client secret. Set SESSION_SECRET environment variable.");
